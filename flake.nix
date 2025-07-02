@@ -49,6 +49,13 @@
           };
         }
       );
+
+      overlays.default = final: prev: {
+        python3 = prev.python3.override {
+          packageOverrides = pyFinal: pyPrev: self.legacyPackages.${final.system}.python3Packages;
+        };
+      };
+
       formatter = eachSystem ({ pkgs, ... }: pkgs.nixfmt-tree);
     };
 }
