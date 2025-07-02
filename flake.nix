@@ -26,9 +26,14 @@
           default = self.packages.${system}.all;
           all = pkgs.symlinkJoin {
             name = "all-packages";
-            paths = lib.attrValues self.packages.${system}.python3Packages;
+            paths = lib.attrValues self.legacyPackages.${system}.python3Packages;
           };
+        }
+      );
 
+      legacyPackages = eachSystem (
+        { pkgs, ... }:
+        {
           python3Packages = {
             inherit (pkgs.python3Packages)
               scipy
