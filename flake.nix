@@ -14,7 +14,20 @@
           config = {
             allowUnfree = true;
             cudaSupport = true;
-            cudaCapabilities = [ "6.1" ];
+            cudaCapabilities = [
+              # https://docs.nvidia.com/deeplearning/cudnn/backend/latest/reference/support-matrix.html
+              "12.0"
+              "10.0"
+              "9.0"
+              "8.9"
+              "8.6"
+              "8.0"
+              "7.5"
+              "7.0"
+              "6.1"
+              "6.0"
+              "5.0"
+            ];
           };
         };
       };
@@ -36,24 +49,23 @@
         {
           python3Packages = {
             inherit (pkgs.python3Packages)
-              scipy
+              ipykernel
+              keras
               numpy
               pandas
-              ipykernel
-              torch
-              tensorflow
-              sentence-transformers
               scikit-learn
-              keras
+              scipy
+              sentence-transformers
+              tensorflow
+              torch
+              transformers
               ;
           };
         }
       );
 
       overlays.default = final: prev: {
-        python3 = prev.python3.override {
-          packageOverrides = pyFinal: pyPrev: self.legacyPackages.${final.system}.python3Packages;
-        };
+        pythonPackagesExtensions = lib.singleton self.legacyPackages.${final.system}.python3Packages;
       };
 
       formatter = eachSystem ({ pkgs, ... }: pkgs.nixfmt-tree);
