@@ -20,20 +20,7 @@
           config = {
             allowUnfree = true;
             cudaSupport = true;
-            cudaCapabilities = [
-              # https://docs.nvidia.com/deeplearning/cudnn/backend/latest/reference/support-matrix.html
-              "12.0"
-              "10.0"
-              "9.0"
-              "8.9"
-              "8.6"
-              "8.0"
-              "7.5"
-              "7.0"
-              "6.1"
-              "6.0"
-              "5.0"
-            ];
+            cudaCapabilities = [ "6.1" ];
           };
         };
       };
@@ -69,10 +56,6 @@
           };
         }
       );
-
-      overlays.default = final: prev: {
-        pythonPackagesExtensions = lib.singleton self.legacyPackages.${final.system}.python3Packages;
-      };
 
       formatter = eachSystem ({ pkgs, ... }: pkgs.nixfmt-tree);
     };
